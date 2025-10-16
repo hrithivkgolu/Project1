@@ -3,4 +3,5 @@ uvicorn
 python-dotenv
 pydantic
 GitPython
-google 
+google-genai
+requests
