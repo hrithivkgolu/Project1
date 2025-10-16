@@ -16,11 +16,11 @@ async def root():
 async def receive_json(request: Request):
     try:
         data = await request.json() 
-        email = data.email
-        secret_key = data.secret
-        task = data.task
-        brief = data.brief
-        attach = data.attachments
+        email = data[email]
+        secret_key = data[secret]
+        task = data[task]
+        brief = data[brief]
+        attach = data[attachments]
 
         log = {
             "email":email,
