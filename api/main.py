@@ -12,4 +12,12 @@ async def root():
     }
 
 
+@app.post("/receive")
+async def receive_json(request: Request):
+    try:
+        data = await request.json() 
+        return JSONResponse(content=data)
+    except Exception:
+        return JSONResponse(content={"message": "No data available"}, status_code=400)
+
 
