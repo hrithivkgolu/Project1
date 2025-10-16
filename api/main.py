@@ -11,14 +11,10 @@ async def root():
         "version": "1.0.0"
     }
 
-@app.post("/receive")
-async def receive(request: Request):
-    data = await request.json()
-    return {"received": data}
 
 
 @app.post("/receive")
-async def receive(data: TaskData):
+async def receive(data: EvaluationRequest):
 
     print("--- New Evaluation Request Received ---")
     print(f"Task ID: {request_data.task} | Round: {request_data.round}")
