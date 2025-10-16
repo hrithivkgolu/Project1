@@ -1,0 +1,11 @@
+{
+  "email": "test@example.com",
+  "secret": "my-github-pat-secret",
+  "task": "test-task-1",
+  "round": 1,
+  "nonce": "ab12-45cd",
+  "brief": "A simple test task.",
+  "checks": ["Check 1", "Check 2"],
+  "evaluation_url": "https://example.com/notify",
+  "attachments": [{ "name": "sample.txt", "url": "data:text/plain;base64,..." }]
+}
