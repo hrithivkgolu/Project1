@@ -7,18 +7,18 @@ from typing import Dict, Any
 from pydantic import BaseModel
 
 class Attachment(BaseModel):
-    name: str
-    url: str
+    name: None
+    url: None
 
 class EvaluationRequest(BaseModel):
-    email: str
-    secret: str
-    task: str
-    round: int
-    nonce: str
-    brief: str
-    checks: list[str]
-    evaluation_url: str
+    email: "24f2000717@gmail.com"
+    secret: "Hrithiv"
+    task: "make an app using llm"
+    round: 1
+    nonce: "api=23"
+    brief: "make an webapp that calculates basic maths problem like add subtract divdi and multiply"
+    checks: ["should have a readme.md", "should have a responsive cursor"]
+    evaluation_url: "Done"
     attachments: list[Attachment]
 
 
