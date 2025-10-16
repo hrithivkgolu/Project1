@@ -13,21 +13,3 @@ async def root():
 
 
 
-@app.post("/receive")
-async def receive(data: EvaluationRequest):
-
-    print("--- New Evaluation Request Received ---")
-    print(f"Task ID: {request_data.task} | Round: {request_data.round}")
-    print(f"Student Email: {request_data.email}")
-    print(f"Brief: {request_data.brief[:80]}...")
-    print(f"Evaluation URL: {request_data.evaluation_url}")
-    print(f"Attachments Count: {len(request_data.attachments)}")
-    
-    return JSONResponse(
-        status_code=202,
-        content={
-            "status": "Accepted",
-            "task_key": f"{request_data.task}-{request_data.round}",
-            "message": "Task validated and asynchronous code generation pipeline initiated."
-        }
-    )
