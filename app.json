@@ -1,17 +1,13 @@
 {
-  // Student email ID
-  "email": "student@example.com",
-  // Student-provided secret
-  "secret": "...",
-  // A unique task ID.
-  "task": "captcha-solver-...",
-  // There will be multiple rounds per task. This is the round index
+  "email": "24f2000717@ds.study.iitm.ac.in",
+  "secret": "ProjectH",
+  "task": "Data-Visualise",
   "round": 1,
   // Pass this nonce back to the evaluation URL below
   "nonce": "ab12-...",
   // brief: mentions what the app needs to do
-  "brief": "Create a captcha solver that handles ?url=https://.../image.png. Default to attached sample.",
-  // checks: mention how it will be evaluated
+  "brief": "the app will scrape a csv data from a url ",
+  // checks: mention how it wile evaluated
   "checks": [
     "Repo has MIT license"
     "README.md is professional",
