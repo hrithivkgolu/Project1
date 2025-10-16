@@ -5,7 +5,7 @@ import time
 import json
 from pydantic import BaseModel, Field
 from google import genai
-from google.genai import types # <-- ADDED: Needed for types.GenerateContentConfig and types.SafetySetting
+from google.genai import types # Needed for configuration types
 from typing import List, Optional
 
 # --- Pydantic Schema for Incoming Task Data ---
@@ -28,13 +28,11 @@ class EvaluationRequest(BaseModel):
     evaluation_url: str = Field(description="URL to post completion status.")
     attachments: List[Attachment]
 
-    # Note: github_repo field removed as Git functionality is no longer needed.
-
 # --- LLM Code Generation (Copilot Equivalent) ---
 
 def _generate_code_from_brief(brief: str, api_key: str) -> Optional[str]:
     """
-    Calls the LLM API (now Gemini) to generate the requested code based on the brief.
+    Calls the LLM API (Gemini) to generate the requested code based on the brief.
     
     Args:
         brief: The detailed task description.
@@ -44,10 +42,9 @@ def _generate_code_from_brief(brief: str, api_key: str) -> Optional[str]:
         The generated code as a single string, or None if generation fails.
     """
     try:
-        # FIX 1: Initialize client using genai.Client
+        # Initialize client with the API key variable
         gemini_client = genai.Client(api_key=api_key) 
     except Exception as e:
-        # FIX 2: Update error message to reflect Gemini
         print(f"ERROR: Failed to initialize Gemini client: {e}")
         return None
         
@@ -60,35 +57,21 @@ def _generate_code_from_brief(brief: str, api_key: str) -> Optional[str]:
         "Do not use external CSS/JS files. Use Tailwind CSS for styling in HTML/React."
     )
     
-    # Configure safety settings (standard practice for Gemini SDK)
-    safety_settings = [
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        ),
+    # Correct structure for system instruction in the Gemini API (as a message with role 'system')
+    contents = [
+        types.Content(role='system', parts=[types.Part.from_text(system_prompt)]),
+        types.Content(role='user', parts=[types.Part.from_text(f"Task Brief: {brief}\n\nGenerate the complete, single-file solution.")])
     ]
 
     try:
-        # FIX 3: Use the correct Gemini API call structure
         response = gemini_client.models.generate_content(
             model="gemini-2.5-flash",
-            system_instruction=system_prompt, # Gemini uses system_instruction for persona
-            contents=[
-                {"role": "user", "parts": [
-                    {"text": f"Task Brief: {brief}\n\nGenerate the complete, single-file solution."}
-                ]}
-            ],
+            contents=contents,
             config=types.GenerateContentConfig(
                 temperature=0.7,
-                safety_settings=safety_settings
-            )
+            ),
         )
-        
-        # FIX 4: Extract the text content from the Gemini response structure
+        # Extract the text content
         generated_code = response.text
         return generated_code
     except Exception as e:
@@ -107,7 +90,7 @@ def run_pipeline(data_dict: dict):
     
     # 1. Configuration & Key Retrieval
     # Key name is 'vercel' as per user's custom environment variable setup
-    llm_api_key = os.environ.get("vercelapp") 
+    llm_api_key = os.environ.get("vercel") 
     
     if not llm_api_key:
         print("FATAL ERROR: 'vercel' environment variable (LLM API Key) not found.")
