@@ -4,7 +4,8 @@ import os
 import time
 import json
 from pydantic import BaseModel, Field
-import openai
+from google import genai
+from google.genai import types # <-- ADDED: Needed for types.GenerateContentConfig and types.SafetySetting
 from typing import List, Optional
 
 # --- Pydantic Schema for Incoming Task Data ---
@@ -33,20 +34,21 @@ class EvaluationRequest(BaseModel):
 
 def _generate_code_from_brief(brief: str, api_key: str) -> Optional[str]:
     """
-    Calls the LLM API to generate the requested code based on the brief.
+    Calls the LLM API (now Gemini) to generate the requested code based on the brief.
     
     Args:
         brief: The detailed task description.
-        api_key: The OpenAI API key.
+        api_key: The Gemini API key.
         
     Returns:
         The generated code as a single string, or None if generation fails.
     """
     try:
-        # Initialize client with the API key variable
-        openai_client = openai.OpenAI(api_key=api_key) 
+        # FIX 1: Initialize client using genai.Client
+        gemini_client = genai.Client(api_key=api_key) 
     except Exception as e:
-        print(f"ERROR: Failed to initialize OpenAI client: {e}")
+        # FIX 2: Update error message to reflect Gemini
+        print(f"ERROR: Failed to initialize Gemini client: {e}")
         return None
         
     system_prompt = (
@@ -58,17 +60,36 @@ def _generate_code_from_brief(brief: str, api_key: str) -> Optional[str]:
         "Do not use external CSS/JS files. Use Tailwind CSS for styling in HTML/React."
     )
     
+    # Configure safety settings (standard practice for Gemini SDK)
+    safety_settings = [
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        ),
+    ]
+
     try:
-        response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Task Brief: {brief}\n\nGenerate the complete, single-file solution."}
+        # FIX 3: Use the correct Gemini API call structure
+        response = gemini_client.models.generate_content(
+            model="gemini-2.5-flash",
+            system_instruction=system_prompt, # Gemini uses system_instruction for persona
+            contents=[
+                {"role": "user", "parts": [
+                    {"text": f"Task Brief: {brief}\n\nGenerate the complete, single-file solution."}
+                ]}
             ],
-            temperature=0.7,
+            config=types.GenerateContentConfig(
+                temperature=0.7,
+                safety_settings=safety_settings
+            )
         )
-        # Extract the text content
-        generated_code = response.choices[0].message.content
+        
+        # FIX 4: Extract the text content from the Gemini response structure
+        generated_code = response.text
         return generated_code
     except Exception as e:
         print(f"ERROR: LLM Generation failed: {e}")
@@ -86,7 +107,7 @@ def run_pipeline(data_dict: dict):
     
     # 1. Configuration & Key Retrieval
     # Key name is 'vercel' as per user's custom environment variable setup
-    llm_api_key = os.environ.get("vercel") 
+    llm_api_key = os.environ.get("vercelapp") 
     
     if not llm_api_key:
         print("FATAL ERROR: 'vercel' environment variable (LLM API Key) not found.")
