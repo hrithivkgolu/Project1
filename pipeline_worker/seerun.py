@@ -4,6 +4,24 @@ import shutil
 import tempfile
 from git import Repo, GitCommandError
 from typing import Dict, Any
+from pydantic import BaseModel
+
+class Attachment(BaseModel):
+    name: str
+    url: str
+
+class EvaluationRequest(BaseModel):
+    email: str
+    secret: str
+    task: str
+    round: int
+    nonce: str
+    brief: str
+    checks: list[str]
+    evaluation_url: str
+    attachments: list[Attachment]
+
+
 
 # --- Configuration ---
 CODE_FILENAME = "index.html"
