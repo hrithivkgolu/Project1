@@ -1,7 +1,7 @@
 from fastapi import FastAPI, BackgroundTasks, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from pipeline_worker.seerun import run_pipeline, EvaluationRequest
+#from pipeline_worker.seerun import run_pipeline, EvaluationRequest
 
 app = FastAPI(title="LLM Code Generation Pipeline API")
 
