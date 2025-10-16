@@ -3,19 +3,17 @@
   "secret": "ProjectH",
   "task": "Data-Visualise",
   "round": 1,
-  // Pass this nonce back to the evaluation URL below
+
   "nonce": "ab12-...",
-  // brief: mentions what the app needs to do
+
   "brief": "the app will scrape a csv data from a url ",
-  // checks: mention how it wile evaluated
+
   "checks": [
-    "Repo has MIT license"
+    "Repo has MIT license",
     "README.md is professional",
     "Page displays captcha URL passed at ?url=...",
-    "Page displays solved captcha text within 15 seconds",
+    "Page displays solved captcha text within 15 seconds"
   ],
-  // Send repo & commit details to the URL below
   "evaluation_url": "https://example.com/notify",
-  // Attachments will be encoded as data URIs
   "attachments": [{ "name": "sample.png", "url": "data:image/png;base64,iVBORw..." }]
 }
