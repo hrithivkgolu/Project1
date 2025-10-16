@@ -16,20 +16,7 @@ async def root():
 async def receive_json(request: Request):
     try:
         data = await request.json() 
-        email = data[email]
-        secret_key = data[secret]
-        task = data[task]
-        brief = data[brief]
-        attach = data[attachments]
-
-        log = {
-            "email":email,
-            "secret_key":secret_key,
-            "task":task,
-            "brief": brief,
-            "attachments": attach
-        }
-        return JSONResponse(content= log, status_code=200)
+        return JSONResponse(content= data, status_code=200)
     except Exception:
         return JSONResponse(content={"message": "No data available"}, status_code=400)
 
