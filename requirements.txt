@@ -2,6 +2,6 @@ fastapi
 uvicorn
 python-dotenv
 pydantic
-GitPython
 requests
 github
+aiohttp==3.8.5
