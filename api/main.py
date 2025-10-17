@@ -5,7 +5,7 @@ import os
 from github import Github
 import requests
 import datetime
-
+import re
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO_NAME = "generated-apps"
 
