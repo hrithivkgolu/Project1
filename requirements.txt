@@ -4,4 +4,4 @@ python-dotenv
 pydantic
 requests
 github
-aiohttp==3.8.5
+GitHub
