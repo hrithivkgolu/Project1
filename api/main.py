@@ -37,7 +37,7 @@ async def receive_task_endpoint(request: Request):
             detail='Invalid JSON format in request body.'
         )
 
-    task_description = request_body.get('taskDescription')
+    task_description = request_body.get('brief')
     specific_model = request_body.get('specificModel', 'gpt-4o-mini')
 
     if not task_description:
