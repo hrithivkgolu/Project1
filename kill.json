@@ -1,11 +1,24 @@
 {
-  "email": "hrithivkgo1111@gmail.com",
-  "secret": "ProjectH",
-  "task": "app calculator",
+
+  "email": "student@example.com",
+
+  "secret": "...",
+
+  "task": "captcha-solver-...",
   "round": 1,
-  "nonce": "ab12-45cd",
-  "brief": "distance converter using python",
-  "checks": ["use pyhton api", "create a readme.md file giving discription", "dont add any explanaition just code", "the new file name with extention should start from #"],
+
+  "nonce": "ab12-7868",
+
+  "brief": "Create a captcha solver that handles ?url=https://.../image.png. Default to attached sample.",
+
+  "checks": [
+    "Repo has MIT license",
+    "README.md is professional",
+    "Page displays captcha URL passed at ?url=...",
+    "Page displays solved captcha text within 15 seconds"
+  ],
+
   "evaluation_url": "https://example.com/notify",
-  "attachments": [{ "name": "hello.txt", "url": "data:text/plain;base64,SGVsbG8gd29ybGQh" }]
+
+  "attachments": [{ "name": "sample.png", "url": "data:image/png;base64,iVBORw..." }]
 }

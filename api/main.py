@@ -15,7 +15,7 @@ app = FastAPI(title="LLM Task Processor API")
 
 def sanitize_branch_name(name: str) -> str:
     # Replace invalid characters with underscores
-    name = re.sub(r'[^a-zA-Z0-9_\-\/]', '_', name)
+    name = re.sub(r'[^a-zA-Z0-9_\-\/]', '_', name[5])
     # Remove leading/trailing slashes or dots
     name = name.strip('/.')
     return name
