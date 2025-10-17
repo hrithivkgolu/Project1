@@ -86,7 +86,7 @@ async def receive_task_endpoint(request: Request):
                     "2. Each new file must start with '# File: filename.ext'.\n" \
                     "3. Do not include any markdown or instructions outside the code.\n" \
                     "4. Do not wrap code in triple backticks.\n" \
-                    "5. Name all files with appropriate extensions.\n"
+                    "5. Name all files with appropriate extensions.\n" \
                     "6. also make a readme.md file\n"
     specific_model = request_body.get('specificModel', 'gpt-4o')
 
