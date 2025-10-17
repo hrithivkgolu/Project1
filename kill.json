@@ -4,7 +4,7 @@
   "task": "app calculator",
   "round": 1,
   "nonce": "ab12-45cd",
-  "brief": "a html file with some lorem text",
+  "brief": "make a calculator using python",
   "checks": ["use pyhton api", "create a readme.md file giving discription", "dont add any explanaition just code", "the new file name with extention should start from #"],
   "evaluation_url": "https://example.com/notify",
   "attachments": [{ "name": "hello.txt", "url": "data:text/plain;base64,SGVsbG8gd29ybGQh" }]
