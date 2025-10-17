@@ -3,7 +3,7 @@ name: Auto Merge AI Branches
 on:
   push:
     branches-ignore:
-      - main  # only trigger for non-main branches
+      - main  # Only run when a non-main branch is pushed
 
 permissions:
   contents: write
@@ -13,27 +13,37 @@ jobs:
   auto-merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Get branch name
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        id: extract_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
+        id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          branch: ${{ env.BRANCH_NAME }}
-          title: "Auto PR from ${{ env.BRANCH_NAME }}"
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          title: "Auto PR from ${{ steps.extract_branch.outputs.branch }}"
           body: "Automatically created by AI pipeline."
+          labels: "auto-pr"
 
       - name: Auto Merge Pull Request
-        uses: pascalgn/automerge-action@v0.16.3
+        if: steps.create_pr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          merge-method: squash
+
+      - name: Merge the Pull Request
+        if: steps.create_pr.outputs.pull-request-number != ''
+        run: |
+          gh pr merge ${{ steps.create_pr.outputs.pull-request-number }} --squash --admin --delete-branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_METHOD: squash
-          MERGE_DELETE_BRANCH: true
-          MERGE_COMMIT_MESSAGE: "Auto merged PR from ${{ env.BRANCH_NAME }}"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
