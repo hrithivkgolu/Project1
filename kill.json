@@ -1,11 +1,11 @@
 {
-  "email": "test@example.com",
-  "secret": "my-github-pat-secret",
-  "task": "test-task-1",
+  "email": "hrithivkgo1111@gmail.com",
+  "secret": "ProjectH",
+  "task": "app calculator",
   "round": 1,
   "nonce": "ab12-45cd",
-  "brief": "A simple test task.",
-  "checks": ["Check 1", "Check 2"],
+  "brief": "make a useable webpage calcualor with basic functions.",
+  "checks": ["use pyhton api", "create a readme.md file giving discription", "have the page name as attachments name"],
   "evaluation_url": "https://example.com/notify",
-  "attachments": [{ "name": "sample.txt", "url": "data:text/plain;base64,..." }]
+  "attachments": [{ "name": "hello.txt", "url": "data:text/plain;base64,SGVsbG8gd29ybGQh" }]
 }

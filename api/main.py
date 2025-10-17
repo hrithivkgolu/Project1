@@ -1,7 +1,6 @@
 from fastapi import FastAPI, BackgroundTasks, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from pipeline_worker.seerun import run_pipeline, EvaluationRequest
 
 app = FastAPI(title="LLM Code Generation Pipeline API")
 
@@ -16,8 +15,7 @@ async def root():
 
 
 @app.post("/receive")
-async def receive(data: EvaluationRequest, background_tasks: BackgroundTasks):
-    background_tasks.add_task(run_pipeline, data.model_dump())
+async def receive(data: EvaluationRequest):
     return JSONResponse(
         content={
             "status": "Accepted",
@@ -25,7 +23,7 @@ async def receive(data: EvaluationRequest, background_tasks: BackgroundTasks):
             "task_id": data.task,
             "round": data.round
         }, 
-        status_code=status.HTTP_202_ACCEPTED
+        status_code=status.HTTP_200_ACCEPTED
     )
 
 @app.get("/receive")
