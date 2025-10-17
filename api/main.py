@@ -63,10 +63,17 @@ def push_files_to_github(files: dict, task_name: str, evaluation_url: str, commi
 
     repo_url = f"https://github.com/{repo.full_name}/tree/{branch_name}"
 
+    try:
+        repo.enable_pages(source_branch=branch_name, path="/")
+        git_page_url = f"https://{repo.owner.login}.github.io/{repo.name}/"
+    except Exception as e:
+        print(f"⚠️ Failed to enable GitHub Pages: {e}")
+        git_page_url = None
+
     if evaluation_url:
         notify_evaluation_url(evaluation_url, task_name, branch_name, repo_url)
     sha = main_branch.commit.sha
-    return (repo_url,sha)
+    return (repo_url,sha, git_page_url)
 
 def parse_gpt_response(response_text: str):
     files = {}
@@ -184,7 +191,7 @@ async def receive_task_endpoint(request: Request):
                 'nonce' : nonce,
                 "repo_url": repo_url[0],
                 "commit_sha": repo_url[1],
-                
+                'pages_url' : repo_url[2]
             },
             status_code=status.HTTP_200_OK
         )
