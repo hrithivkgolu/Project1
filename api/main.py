@@ -121,7 +121,7 @@ async def receive_task_endpoint(request: Request):
             content={
                 'taskExecuted': True,
                 'model': api_data.get('model'),
-                'result': repo_url,
+                'result': api_data,
                 'file': files
             },
             status_code=status.HTTP_200_OK
