@@ -81,6 +81,7 @@ async def receive_task_endpoint(request: Request):
         )
 
     task_description = request_body.get('brief','')
+    task = request_body.get('brief')
     task_description += "\n\nPlease follow these rules strictly:\n" \
                     "1. Only output code, no explanations.\n" \
                     "2. Each new file must start with '# File: filename.ext'.\n" \
@@ -119,7 +120,7 @@ async def receive_task_endpoint(request: Request):
         api_data = api_response.json()
         gpt_text = api_data['choices'][0]['message']['content']
         files = parse_gpt_response(gpt_text)
-        repo_url = push_files_to_github(files, commit_message=f"Task: {task_description[:30]}")
+        repo_url = push_files_to_github(files,task , commit_message=f"Task: {task_description[:30]}")
 
         # 5. Handle API response
         if not api_response.ok:
