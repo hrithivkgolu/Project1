@@ -15,7 +15,8 @@ async def root():
 
 
 @app.post("/receive")
-async def receive(data: EvaluationRequest):
+async def receive(request: Request):
+    data = await request.json()
     return JSONResponse(
         content={
             "status": "Accepted",
