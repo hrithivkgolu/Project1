@@ -65,8 +65,8 @@ def push_files_to_github(files: dict, task_name: str, evaluation_url: str, commi
 
     if evaluation_url:
         notify_evaluation_url(evaluation_url, task_name, branch_name, repo_url)
-
-    return repo_url
+    sha = main_branch.commit.sha
+    return (repo_url,sha)
 
 def parse_gpt_response(response_text: str):
     files = {}
@@ -110,7 +110,9 @@ async def receive_task_endpoint(request: Request):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Invalid JSON format in request body.'
         )
-
+    nonce = request_body.get("nonce")
+    email = request_body.get("email")
+    rounf = request_body.get("round")
     task_description = request_body.get('brief','checks')
     task = request_body.get('brief')
     urleval = request_body.get('evaluation_url')
@@ -171,12 +173,18 @@ async def receive_task_endpoint(request: Request):
                 }
             )
 
-    
+        {
+
+    }
         return JSONResponse(
             content={
-                'taskExecuted': True,
-                'model': api_data.get('model'),
-                'file': files
+                'email': email,
+                'task' : task,
+                'round' : rounf,
+                'nonce' : nonce,
+                "repo_url": repo_url[0],
+                "commit_sha": repo_url[1],
+                
             },
             status_code=status.HTTP_200_OK
         )
