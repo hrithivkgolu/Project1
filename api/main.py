@@ -15,11 +15,7 @@ app = FastAPI(title="LLM Task Processor API")
 
 @app.post("/receive")
 async def receive_task_endpoint(request: Request):
-    """
-    FastAPI Endpoint to receive and process a task using aipipe.org LLM proxy.
-    It expects a JSON payload containing 'taskDescription' and optionally 'specificModel'.
-    """
-    # 1. Check for the AIPipe API Key from environment variables
+
     aipipe_token = os.environ.get('AIPIPE_TOKEN')
     if not aipipe_token:
         # FastAPI way to handle server error
@@ -38,7 +34,7 @@ async def receive_task_endpoint(request: Request):
         )
 
     task_description = request_body.get('brief')
-    specific_model = request_body.get('specificModel', 'gpt-4o-mini')
+    specific_model = request_body.get('specificModel', 'gpt-4o')
 
     if not task_description:
         raise HTTPException(
@@ -47,7 +43,6 @@ async def receive_task_endpoint(request: Request):
         )
 
     try:
-        # 3. Construct the OpenAI-compatible request payload for aipipe.org
         AI_SYSTEM_PROMPT = "You are an expert AI task execution agent. Your role is to carefully analyze the user's request and provide a clear, detailed, and actionable response that fully completes the task."
 
         payload = {
@@ -57,10 +52,8 @@ async def receive_task_endpoint(request: Request):
                 {'role': 'user', 'content': task_description}
             ],
             'temperature': 0.7,
-            'max_tokens': 1024
+            'max_tokens': 2048
         }
-
-        # 4. Call the aipipe.org OpenRouter/OpenAI proxy endpoint
         AIPIPE_ENDPOINT = 'https://aipipe.org/openai/v1/chat/completions'
 
         headers = {
@@ -68,8 +61,6 @@ async def receive_task_endpoint(request: Request):
             'Authorization': f'Bearer {aipipe_token}'
         }
 
-        # Use the requests library to make the external API call
-        # Added a timeout for robust API calls
         api_response = requests.post(AIPIPE_ENDPOINT, headers=headers, json=payload, timeout=60)
         api_data = api_response.json()
 
@@ -103,11 +94,9 @@ async def receive_task_endpoint(request: Request):
         )
 
     except HTTPException:
-        # Re-raise HTTPException to be handled by FastAPI's exception handler
         raise
     except Exception as e:
         print(f'Server Function Execution Error: {e}')
-        # Catch-all for internal server errors
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f'Internal Server Error during task processing: {str(e)}'
@@ -115,7 +104,6 @@ async def receive_task_endpoint(request: Request):
 
 @app.get("/")
 async def root():
-    """Simple health check endpoint."""
     return {
         "service": "LLM Task Processor API",
         "status": "OK",

@@ -4,8 +4,8 @@
   "task": "app calculator",
   "round": 1,
   "nonce": "ab12-45cd",
-  "brief": "make a useable webpage calcualor with basic functions.",
-  "checks": ["use pyhton api", "create a readme.md file giving discription", "have the page name as attachments name"],
+  "brief": "a webpage with the text in attachments name.",
+  "checks": ["use pyhton api", "create a readme.md file giving discription"],
   "evaluation_url": "https://example.com/notify",
   "attachments": [{ "name": "hello.txt", "url": "data:text/plain;base64,SGVsbG8gd29ybGQh" }]
 }
