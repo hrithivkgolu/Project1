@@ -66,7 +66,13 @@ async def receive_task_endpoint(request: Request):
             detail='Invalid JSON format in request body.'
         )
 
-    task_description = request_body.get('brief')
+    task_description = request_body.get('brief','')
+    task_description += "\n\nPlease follow these rules strictly:\n" \
+                    "1. Only output code, no explanations.\n" \
+                    "2. Each new file must start with '# File: filename.ext'.\n" \
+                    "3. Do not include any markdown or instructions outside the code.\n" \
+                    "4. Do not wrap code in triple backticks.\n" \
+                    "5. Name all files with appropriate extensions.\n"
     specific_model = request_body.get('specificModel', 'gpt-4o')
 
     if not task_description:
