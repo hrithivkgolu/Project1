@@ -1,35 +1,12 @@
-# CAPTCHA Solver
+# GitHub Pages Site
 
-This is a simple CAPTCHA solver that uses Tesseract OCR to decode text from CAPTCHA images.
+This is a public GitHub Pages site containing various files:
 
-## Installation
+- **Ashravan Short Story**: A Brandon Sanderson inspired short story.
+- **Dilemma**: An ethical dilemma scenario for autonomous vehicles.
+- **About Me**: A brief description of myself in three words.
+- **Pelican SVG**: An SVG illustration of a pelican riding a bicycle.
+- **Restaurant Recommendation**: A recommended restaurant in Delhi.
+- **Economic Prediction**: Prediction of the Fed Funds rate for December 2025.
 
-1. Make sure to have Tesseract OCR installed on your system.
-2. Install the required Python packages:
-   ```
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-To solve a CAPTCHA from a URL:
-
-```python
-from captcha_solver import solve_captcha
-
-captcha_text = solve_captcha(image_url='https://example.com/captcha.png')
-print(captcha_text)
-```
-
-To solve a sample CAPTCHA:
-
-```python
-from captcha_solver import solve_captcha
-
-captcha_text = solve_captcha()
-print(captcha_text)
-```
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+All content is provided under the MIT License.
