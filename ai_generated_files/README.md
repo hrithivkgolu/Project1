@@ -1,35 +1,35 @@
-# CAPTCHA Solver
-
-This is a simple CAPTCHA solver that uses Tesseract OCR to decode text from CAPTCHA images.
-
-## Installation
-
-1. Make sure to have Tesseract OCR installed on your system.
-2. Install the required Python packages:
-   ```
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-To solve a CAPTCHA from a URL:
-
-```python
-from captcha_solver import solve_captcha
-
-captcha_text = solve_captcha(image_url='https://example.com/captcha.png')
-print(captcha_text)
 ```
+# Project
 
-To solve a sample CAPTCHA:
+This project includes a Python script `execute.py` that processes a CSV file and outputs a JSON result. The project is set up to run in a CI environment using GitHub Actions.
 
-```python
-from captcha_solver import solve_captcha
+## Requirements
 
-captcha_text = solve_captcha()
-print(captcha_text)
-```
+- Python 3.11+
+- Pandas 2.3
+- ruff for linting
+
+## Setup
+
+1. Install the required Python packages:
+   ```bash
+   pip install pandas==2.3.0 ruff
+   ```
+
+2. Run the script:
+   ```bash
+   python execute.py
+   ```
+
+## CI/CD
+
+The CI/CD pipeline is set up using GitHub Actions and includes:
+
+- Linting with ruff
+- Running the `execute.py` script to generate `result.json`
+- Publishing `result.json` via GitHub Pages
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+```
