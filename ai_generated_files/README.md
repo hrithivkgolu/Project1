@@ -1,35 +1,21 @@
-# CAPTCHA Solver
+```
+# AvalonBay Communities Shares Outstanding
 
-This is a simple CAPTCHA solver that uses Tesseract OCR to decode text from CAPTCHA images.
+This project displays the maximum and minimum shares outstanding for AvalonBay Communities, fetched from the SEC API. The data is dynamically updated based on the CIK provided in the URL query string.
 
-## Installation
+## Features
 
-1. Make sure to have Tesseract OCR installed on your system.
-2. Install the required Python packages:
-   ```
-   pip install -r requirements.txt
-   ```
+- Fetches and displays shares outstanding data for AvalonBay Communities.
+- Dynamically updates data when a different CIK is provided in the URL.
+- Simple and visually appealing HTML interface.
 
 ## Usage
 
-To solve a CAPTCHA from a URL:
-
-```python
-from captcha_solver import solve_captcha
-
-captcha_text = solve_captcha(image_url='https://example.com/captcha.png')
-print(captcha_text)
-```
-
-To solve a sample CAPTCHA:
-
-```python
-from captcha_solver import solve_captcha
-
-captcha_text = solve_captcha()
-print(captcha_text)
-```
+1. Open `index.html` in a web browser.
+2. To view data for a different company, append `?CIK=your_cik_here` to the URL.
+3. Ensure a proper `User-Agent` is set in the `fetch` request in accordance with SEC guidelines.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+```
