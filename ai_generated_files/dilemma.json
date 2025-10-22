@@ -1,0 +1,11 @@
+{
+  "people": 3,
+  "case_1": {
+    "swerve": false,
+    "reason": "Minimize harm by hitting fewer individuals."
+  },
+  "case_2": {
+    "swerve": true,
+    "reason": "Prioritize the life of a child over two criminals."
+  }
+}
