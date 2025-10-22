@@ -1,0 +1,37 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas==2.3.0 ruff
+
+    - name: Run Ruff
+      run: ruff execute.py
+
+    - name: Run script and generate result.json
+      run: python execute.py > result.json
+
+    - name: Deploy result.json to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./result.json
+```
