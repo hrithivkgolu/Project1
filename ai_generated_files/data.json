@@ -1,0 +1,13 @@
+```json
+{
+  "entityName": "AvalonBay Communities",
+  "max": {
+    "val": 140000000,
+    "fy": 2022
+  },
+  "min": {
+    "val": 135000000,
+    "fy": 2021
+  }
+}
+```
