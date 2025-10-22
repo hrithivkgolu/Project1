@@ -1,0 +1,51 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AvalonBay Communities - Shares Outstanding</title>
+    <script>
+        async function updateData(cik) {
+            const response = await fetch(`https://data.sec.gov/api/xbrl/companyconcept/${cik}/dei/EntityCommonStockSharesOutstanding.json`, {
+                headers: {
+                    "User-Agent": "YourUserAgentNameHere"
+                }
+            });
+            const data = await response.json();
+            const entityName = data.entityName;
+            const filteredData = data.units.shares.filter(entry => entry.fy > "2020" && typeof entry.val === "number");
+
+            let maxEntry = filteredData[0];
+            let minEntry = filteredData[0];
+
+            filteredData.forEach(entry => {
+                if (entry.val > maxEntry.val) maxEntry = entry;
+                if (entry.val < minEntry.val) minEntry = entry;
+            });
+
+            document.getElementById('share-entity-name').textContent = entityName;
+            document.getElementById('share-max-value').textContent = maxEntry.val;
+            document.getElementById('share-max-fy').textContent = maxEntry.fy;
+            document.getElementById('share-min-value').textContent = minEntry.val;
+            document.getElementById('share-min-fy').textContent = minEntry.fy;
+            document.title = `${entityName} - Shares Outstanding`;
+            document.querySelector('h1').textContent = entityName;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cik = urlParams.get('CIK') || '0000915912';
+            updateData(cik);
+        });
+    </script>
+</head>
+<body>
+    <h1 id="share-entity-name">AvalonBay Communities</h1>
+    <div>
+        <p>Maximum Shares Outstanding: <span id="share-max-value">140000000</span> in Fiscal Year <span id="share-max-fy">2022</span></p>
+        <p>Minimum Shares Outstanding: <span id="share-min-value">135000000</span> in Fiscal Year <span id="share-min-fy">2021</span></p>
+    </div>
+</body>
+</html>
+```
